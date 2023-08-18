@@ -1,9 +1,10 @@
 import numpy as np
 
-from config import cell_config as cc
+from config import color_config as cc
 
 """
 Conway's Game of Life
+https://conwaylife.com/wiki/Conway%27s_Game_of_Life
 
 每個細胞有兩種狀態 - 存活或死亡
 每個細胞與以自身為中心的周圍八格細胞產生互動
@@ -27,7 +28,8 @@ class ConwaysGameOfLife(object):
         self.around = np.zeros((self.width, self.height), dtype=np.int8)
     
     def random_init(self):
-        self.grid = np.random.randint(2, size=(self.width, self.height), dtype=np.int8)
+        self.grid = np.random.randint(
+            2, size=(self.width, self.height), dtype=np.int8)
         for x in range(self.width):
             for y in range(self.height):
                 self.around[x][y] = self.get_around(x, y)
