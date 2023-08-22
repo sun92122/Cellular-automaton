@@ -1,3 +1,4 @@
+import time
 import pygame as pg
 from config import layout_config as lc
 from config import color_config as cc
@@ -100,9 +101,17 @@ class Game(object):
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_RETURN:
                     self.game.update()
+                    self.step += 1
                     self.update_counter = 1
+                # space to pause
                 if event.key == pg.K_SPACE:
                     self.pause = not self.pause
+                # g to show grid
+                if event.key == pg.K_g:
+                    self.screen.show_grid = not self.screen.show_grid
+                if event.key == pg.K_ESCAPE:
+                    self.running = False
+
             if event.type == pg.QUIT:
                 self.running = False
 
@@ -117,10 +126,10 @@ class Game(object):
                     self.game_type = GameType.BrianBrain
                 if event.key == pg.K_UP:
                     self.game_type_chosen_num = max(
-                        1, self.game_type_chosen_num - 1)
+                        GameType.min_num(), self.game_type_chosen_num - 1)
                 if event.key == pg.K_DOWN:
                     self.game_type_chosen_num = min(
-                        2, self.game_type_chosen_num + 1)
+                        GameType.max_num(), self.game_type_chosen_num + 1)
                 if (event.key == pg.K_KP_ENTER or
                     event.key == pg.K_RETURN):
                     self.game_type = GameType(self.game_type_chosen_num)

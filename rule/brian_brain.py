@@ -62,6 +62,12 @@ class BrianBrain(object):
 
     def get_color(self):
         # 0: black, 1: blue, 2: withe
-        return np.vectorize(
-            lambda x: cc.BLACK if x == 0 else cc.BLUE if x == 1 else cc.WHITE
-        )(self.grid)
+        def color(x):
+            if x == 0:
+                return cc.BLACK
+            elif x == 1:
+                return cc.BLUE
+            elif x == 2:
+                return cc.WHITE
+
+        return np.vectorize(color)(self.grid)
