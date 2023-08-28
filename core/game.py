@@ -47,7 +47,7 @@ class Game(object):
                 f"choose: {self.game_type_chosen_num}",
                 self.screen.side_canva_width / 2, 250)
             self.screen.draw_text_center(
-                "up/down to choose, ENTER to confirm", 
+                "up/down to choose, ENTER to confirm",
                 self.screen.side_canva_width / 2, 300)
             self.screen.draw_text_center(
                 "ESC to exit",
@@ -99,18 +99,21 @@ class Game(object):
     def event_handler(self):
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_RETURN:
+                if event.key in [pg.K_RETURN, pg.K_KP_ENTER]:
                     self.game.update()
                     self.step += 1
                     self.update_counter = 1
                 # space to pause
-                if event.key == pg.K_SPACE:
+                if event.key == pg.K_PAUSE:
                     self.pause = not self.pause
-                # g to show grid
-                if event.key == pg.K_g:
-                    self.screen.show_grid = not self.screen.show_grid
                 if event.key == pg.K_ESCAPE:
                     self.running = False
+
+            if event.type == pg.TEXTINPUT:
+                if event.text == ' ':
+                    self.pause = not self.pause
+                if event.text == 'g':
+                    self.screen.show_grid = not self.screen.show_grid
 
             if event.type == pg.QUIT:
                 self.running = False
@@ -118,25 +121,23 @@ class Game(object):
     def choose_event_handler(self):
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_1 or event.key == pg.K_KP1:
-                    self.game_type = GameType.ConwaysGameOfLife
-                if event.key == pg.K_2 or event.key == pg.K_KP2:
-                    self.game_type = GameType.LangtonsAnt
-                if event.key == pg.K_3 or event.key == pg.K_KP3:
-                    self.game_type = GameType.BrianBrain
                 if event.key == pg.K_UP:
                     self.game_type_chosen_num = max(
                         GameType.min_num(), self.game_type_chosen_num - 1)
                 if event.key == pg.K_DOWN:
                     self.game_type_chosen_num = min(
                         GameType.max_num(), self.game_type_chosen_num + 1)
-                if (event.key == pg.K_KP_ENTER or
-                    event.key == pg.K_RETURN):
+                if event.key in [pg.K_RETURN, pg.K_KP_ENTER]:
                     self.game_type = GameType(self.game_type_chosen_num)
                     self.choossing = False
                 if event.key == pg.K_ESCAPE:
                     self.choossing = False
                     self.running = False
+
+            if event.type == pg.TEXTINPUT:
+                if event.text in ['1', '2', '3']:
+                    self.game_type_chosen_num = int(event.text)
+
             if event.type == pg.QUIT:
                 self.choossing = False
                 self.running = False
