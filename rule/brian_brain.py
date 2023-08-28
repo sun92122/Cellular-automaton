@@ -70,4 +70,4 @@ class BrianBrain(object):
             elif x == 2:
                 return cc.WHITE
 
-        return np.vectorize(color)(self.grid)
+        return np.vectorize(color, otypes=[tuple])(self.grid)
