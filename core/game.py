@@ -143,11 +143,20 @@ class Game(object):
                 self.running = False
 
     def draw(self):
+        self.screen.draw_text_left(
+            f"fps: {self.clock.get_fps():.2f}", 10, 10)
+
+        # if (not self.show_last_step and
+        #     self.game_type is not GameType.LangtonsAnt):
+        #     self.last_step = self.game.get_color()
+        # else:
+        #     self.show_last_step = False
         self.screen.draw(
             self.game.get_color(),
             self.game.width, self.game.height)
+
         self.screen.draw_text_left(
-            f"step: {self.step}", 10, 10)
+            f"step: {self.step}", 10, 50)
 
     def custom_draw(self):
         if GameType.LangtonsAnt == self.game_type:
