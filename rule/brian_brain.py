@@ -27,8 +27,13 @@ class BrianBrain(object):
         self.next_grid = np.zeros((self.width, self.height), dtype=np.int8)
     
     def random_init(self):
-        self.grid = np.random.randint(
-            2, size=(self.width, self.height), dtype=np.int8)
+        center_size = min(self.height, self.width) // 3
+        center = np.random.randint(0, 3, (center_size, center_size)) % 2
+
+        start_row = (self.height - center_size) // 2
+        start_col = (self.width - center_size) // 2
+        self.grid[start_col:start_col + center_size,
+                  start_row:start_row + center_size] = center
 
     def update(self):
         for x in range(self.width):
@@ -38,7 +43,7 @@ class BrianBrain(object):
     
     def get_next_state(self, x, y):
         if self.grid[x][y] == 0:
-            if self.get_around(x, y) == 2:
+            if self.get_around(x, y):
                 return 1
             else:
                 return 0
@@ -57,8 +62,10 @@ class BrianBrain(object):
                     continue
                 if y + j < 0 or y + j >= self.height:
                     continue
-                around += self.grid[x + i][y + j]
-        return around
+                if self.grid[x + i][y + j] == 1:
+                    around += 1
+        if around == 2:
+            return True
 
     def get_color(self):
         # 0: black, 1: blue, 2: withe
